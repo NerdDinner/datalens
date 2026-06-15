@@ -280,9 +280,24 @@ services:
       - ${UI_PORT:-8080}:8080
     networks:
       - default
+  analytics-db:
+    image: postgres:15-alpine
+    container_name: analytics_postgres
+    environment:
+      POSTGRES_USER: analyst
+      POSTGRES_PASSWORD: SecretPassword789
+      POSTGRES_DB: dwh_analytics
+    ports:
+      - "5439:5432"
+    volumes:
+      - analytics_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    networks:
+      - default
 #
 volumes:
   db-postgres:
+  analytics_data:
 #
 networks:
   default:
